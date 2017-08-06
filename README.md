@@ -1,5 +1,5 @@
 # lustre-module-ubuntu
-Dockerfile to build lustre kernel module for Ubuntu 16
+Dockerfile to build lustre kernel module for Ubuntu 16. 
 
 To build, do following.
 
@@ -33,5 +33,6 @@ modprobe lustre
 lctl list_nids
 ```
 
+# Credit
 
-
+Thanks to Nathan Lavender <nblavend@iu.edu> who created the original build script.
