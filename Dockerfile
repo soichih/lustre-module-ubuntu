@@ -18,10 +18,11 @@ RUN git tag | grep $(uname -r | cut -d- -f1)-$(uname -r | cut -d- -f2) > /branch
 RUN git checkout $(cat /branchname)
 ADD config .config
 RUN touch .scmversion
-RUN sed -i 's/^VERSION = .*/VERSION = 4/' Makefile
-RUN sed -i 's/^PATCHLEVEL = .*/PATCHLEVEL = 4/' Makefile
-RUN sed -i 's/^SUBLEVEL = .*/SUBLEVEL = 0/' Makefile
-RUN sed -i 's/^EXTRAVERSION =.*/EXTRAVERSION = -87-generic/' Makefile
+RUN sed -i "s/^VERSION = .*/VERSION = $(uname -r | cut -d. -f1)/" Makefile
+RUN sed -i "s/^PATCHLEVEL = .*/PATCHLEVEL = $(uname -r | cut -d. -f2)/" Makefile
+RUN sed -i "s/^SUBLEVEL = .*/SUBLEVEL = $(uname -r | cut -d. -f3 | cut -d- -f1)/" Makefile
+RUN sed -i "s/^EXTRAVERSION =.*/EXTRAVERSION = -$(uname -r | cut -d- -f2)-generic/" Makefile
+RUN cat Makefile
 RUN make -j 4
 
 #build lustre
