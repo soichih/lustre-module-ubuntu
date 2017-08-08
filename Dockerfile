@@ -4,8 +4,7 @@ MAINTAINER Soichi Hayashi <hayashis@iu.edu>
 
 #install deps
 RUN echo "deb-src http://archive.ubuntu.com/ubuntu/ xenial-updates main restricted" >> /etc/apt/sources.list
-RUN \
-	apt-get update && \
+RUN apt-get update && \
 	apt-get build-dep -y linux-image-$(uname -r) && \
 	apt-get install -y build-essential debhelper devscripts fakeroot kernel-wedge libudev-dev pciutils-dev texinfo xmlto libelf-dev python-dev liblzma-dev libaudit-dev dh-systemd module-assistant libreadline-dev dpatch libsnmp-dev quilt uuid-dev libblkid-dev dietlibc-dev git ed linux-headers-$(uname -r)
 
@@ -13,11 +12,9 @@ RUN \
 RUN git clone git://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/xenial /usr/local/src/xenial
 RUN git clone git://git.hpdd.intel.com/fs/lustre-release.git /usr/local/src/lustre-release
 
-#find the branch name for this release
-RUN git tag | grep $(uname -r | cut -d- -f1)-$(uname -r | cut -d- -f2) > /branchname
-
 #build kernel
 WORKDIR /usr/local/src/xenial
+RUN git tag | grep $(uname -r | cut -d- -f1)-$(uname -r | cut -d- -f2) > /branchname
 RUN git checkout $(cat /branchname)
 ADD config .config
 RUN touch .scmversion
